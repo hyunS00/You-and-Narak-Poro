@@ -44,3 +44,20 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 rest.put(Routes.applicationCommands(process.env.ID), { body: commands_json })
     .then((command) => console.log(`${command.length}개의 커멘드를 push했습니다.`))
     .catch(console.error());
+
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', true);
+mongoose
+    .connect(process.env.MONGOURL, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    })
+    .then(console.log('MONGO DB가 연결되었습니다.'));
+
+mongoose.connection.on('reconnected', () => {
+    console.log('MONGO DB가 다시 연결되었습니다.');
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('MONGO DB의 연결이 끊어졌습니다.');
+});
