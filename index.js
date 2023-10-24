@@ -35,6 +35,7 @@ for (const category of connmandsCategoryFiles) {
     for (const file of commandsFiles) {
         const command = require(`./commands/${category}/${file}`);
         client.commands.set(command.data.name, command);
+        console.log(command.data);
         commands_json.push(command.data.toJSON());
     }
 }

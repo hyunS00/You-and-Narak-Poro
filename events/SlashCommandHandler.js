@@ -1,5 +1,6 @@
 const { ChannelType } = require('discord.js');
 const client = require('../index');
+// const blacklist_Schema = require('../models/blacklist');
 
 module.exports = {
     name: 'interactionCreate',
@@ -9,10 +10,12 @@ module.exports = {
      * @param {import ("discord.js").Interaction} interaction
      */
     async execute(interaction) {
-        if (!interaction.isChatInputCommand()) return;
+        if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
         if (interaction.channel.type == ChannelType.DM) return;
         const command = client.commands.get(interaction.commandName);
+        console.log(command);
         if (!command) return;
+
         try {
             await command.execute(interaction);
         } catch (error) {
