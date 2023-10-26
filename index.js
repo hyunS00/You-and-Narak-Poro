@@ -1,3 +1,5 @@
+require('./server');
+
 const dotenv = require('dotenv');
 const fs = require('fs');
 dotenv.config();
@@ -9,6 +11,7 @@ const client = (module.exports = new Client({ intents: [131071] }));
 
 client.login(process.env.TOKEN);
 
+//이벤트를 등록
 const eventsPath = './events';
 const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
 
@@ -22,6 +25,7 @@ for (const file of eventFiles) {
     }
 }
 
+// 커멘드를 등록
 client.commands = new Collection();
 
 const commands_json = [];
@@ -39,12 +43,14 @@ for (const category of connmandsCategoryFiles) {
     }
 }
 
+// 커멘드를 Dicord.js Rest API를 통해 Descord url에 전송하여 등록?
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 rest.put(Routes.applicationCommands(process.env.ID), { body: commands_json })
     .then((command) => console.log(`${command.length}개의 커멘드를 push했습니다.`))
     .catch(console.error());
 
+// 몽고DB 연결
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 mongoose
