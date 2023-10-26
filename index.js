@@ -51,19 +51,19 @@ rest.put(Routes.applicationCommands(process.env.ID), { body: commands_json })
     .catch(console.error());
 
 // 몽고DB 연결
-const mongoose = require('mongoose');
-mongoose.set('strictQuery', true);
-mongoose
-    .connect(process.env.MONGOURL, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-    })
-    .then(console.log('MONGO DB가 연결되었습니다.'));
+// const mongoose = require('mongoose');
+// mongoose.set('strictQuery', true);
+// mongoose
+//     .connect(process.env.MONGOURL, {
+//         useUnifiedTopology: true,
+//         useNewUrlParser: true,
+//     })
+//     .then(console.log('MONGO DB가 연결되었습니다.'));
 
-mongoose.connection.on('reconnected', () => {
-    console.log('MONGO DB가 다시 연결되었습니다.');
-});
+// mongoose.connection.on('reconnected', () => {
+//     console.log('MONGO DB가 다시 연결되었습니다.');
+// });
 
-mongoose.connection.on('disconnected', () => {
-    console.log('MONGO DB의 연결이 끊어졌습니다.');
-});
+// mongoose.connection.on('disconnected', () => {
+//     console.log('MONGO DB의 연결이 끊어졌습니다.');
+// });
