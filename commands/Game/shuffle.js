@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, channelMention } = require('discord.js');
+const {
+    SlashCommandBuilder,
+    EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+} = require('discord.js');
 const { shuffle } = require('../../utils/shuffle');
 
 module.exports = {
@@ -29,7 +35,7 @@ module.exports = {
         const shuffleUsers = [];
         option_users.forEach((e) => {
             shuffleUsers.push(e);
-        }); // 7CC9C5
+        });
         shuffle(shuffleUsers);
         let fields = [];
         option_teamsPlayersNum.forEach((v, i) => {
@@ -40,28 +46,71 @@ module.exports = {
                 inline: true,
             });
         });
-        console.log(...fields);
 
         const shuffleEmbed = new EmbedBuilder()
             .setColor(0x7cc9c5)
             .setTitle('🕹️ 팀원 분배')
-            // .setAuthor({
-            //     name: interaction.user.displayName,
-            //     iconURL: interaction.user.defaultAvatarURL,
-            // })
             .addFields(
                 { name: '\u200B', value: ' ' },
                 { name: '🧑‍🦲 멤버', value: option_users.toString() },
                 { name: '\u200B', value: ' ' },
                 { name: '❓ 섞어 결과 ‼️', value: ' ' }
-                // { name: 'Inline field title', value: 'Some value here', inline: true },
-                // { name: '\u200B', value: '\u200B' }
             );
         fields.forEach((f) => {
             shuffleEmbed.addFields(f);
         });
 
-        await interaction.reply({ embeds: [shuffleEmbed] });
+        const reShuffle = new ButtonBuilder()
+            .setCustomId('retrySuffle')
+            .setLabel('다시 섞기')
+            .setStyle(ButtonStyle.Secondary);
+
+        const row = new ActionRowBuilder().addComponents(reShuffle);
+
+        const response = await interaction.reply({ embeds: [shuffleEmbed], components: [row] });
+
+        const filter = (interaction) => {
+            return interaction.customId === 'retrySuffle';
+        };
+        const collertor = interaction.channel.createMessageComponentCollector({
+            filter,
+            time: 60000 * 30,
+        });
+        try {
+            collertor.on('collect', async (interaction) => {
+                if (interaction.customId === 'retrySuffle') {
+                    option_users.forEach((e) => {
+                        shuffleUsers.push(e);
+                    });
+                    shuffle(shuffleUsers);
+                    let fields = [];
+                    option_teamsPlayersNum.forEach((v, i) => {
+                        const teamMembers = shuffleUsers.splice(0, v);
+                        fields.push({
+                            name: `${i + 1}팀`,
+                            value: teamMembers.toString(),
+                            inline: true,
+                        });
+                    });
+
+                    const reSuffleEmbed = new EmbedBuilder()
+                        .setColor(0x7cc9c5)
+                        .setTitle('🕹️ 팀원 분배')
+                        .addFields(
+                            { name: '\u200B', value: ' ' },
+                            { name: '🧑‍🦲 멤버', value: option_users.toString() },
+                            { name: '\u200B', value: ' ' },
+                            { name: '❓ 섞어 결과 ‼️', value: ' ' }
+                        );
+                    fields.forEach((f) => {
+                        reSuffleEmbed.addFields(f);
+                    });
+                    await interaction.update({ embeds: [reSuffleEmbed], components: [row] });
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
         return;
     },
 };
