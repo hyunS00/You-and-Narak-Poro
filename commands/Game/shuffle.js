@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, channelMention } = require('discord.js');
 const { shuffle } = require('../../utils/shuffle');
 
 module.exports = {
@@ -29,16 +29,39 @@ module.exports = {
         const shuffleUsers = [];
         option_users.forEach((e) => {
             shuffleUsers.push(e);
-        });
+        }); // 7CC9C5
         shuffle(shuffleUsers);
-        let ans = '';
+        let fields = [];
         option_teamsPlayersNum.forEach((v, i) => {
-            ans += `${i + 1}팀: ${shuffleUsers.splice(0, v)}\n`;
+            const teamMembers = shuffleUsers.splice(0, v);
+            fields.push({
+                name: `${i + 1}팀`,
+                value: teamMembers.toString(),
+                inline: true,
+            });
+        });
+        console.log(...fields);
+
+        const shuffleEmbed = new EmbedBuilder()
+            .setColor(0x7cc9c5)
+            .setTitle('🕹️ 팀원 분배')
+            // .setAuthor({
+            //     name: interaction.user.displayName,
+            //     iconURL: interaction.user.defaultAvatarURL,
+            // })
+            .addFields(
+                { name: '\u200B', value: ' ' },
+                { name: '🧑‍🦲 멤버', value: option_users.toString() },
+                { name: '\u200B', value: ' ' },
+                { name: '❓ 섞어 결과 ‼️', value: ' ' }
+                // { name: 'Inline field title', value: 'Some value here', inline: true },
+                // { name: '\u200B', value: '\u200B' }
+            );
+        fields.forEach((f) => {
+            shuffleEmbed.addFields(f);
         });
 
-        await interaction.reply({
-            content: `유저: ${option_users}\n팀당 분배 인원: ${option_teamsPlayersNum}\n\n----셔플 결과----\n${ans}`,
-        });
+        await interaction.reply({ embeds: [shuffleEmbed] });
         return;
     },
 };
