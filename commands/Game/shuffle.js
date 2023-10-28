@@ -59,26 +59,26 @@ module.exports = {
         fields.forEach((f) => {
             shuffleEmbed.addFields(f);
         });
-
+        const date = new Date();
         const reShuffle = new ButtonBuilder()
-            .setCustomId('retrySuffle')
+            .setCustomId(`retrySuffle${date}`)
             .setLabel('다시 섞기')
             .setStyle(ButtonStyle.Secondary);
-
         const row = new ActionRowBuilder().addComponents(reShuffle);
 
         const response = await interaction.reply({ embeds: [shuffleEmbed], components: [row] });
 
         const filter = (interaction) => {
-            return interaction.customId === 'retrySuffle';
+            return interaction.customId === `retrySuffle${date}`;
         };
         const collertor = interaction.channel.createMessageComponentCollector({
             filter,
             time: 60000 * 30,
         });
+
         try {
             collertor.on('collect', async (interaction) => {
-                if (interaction.customId === 'retrySuffle') {
+                if (interaction.customId === `retrySuffle${date}`) {
                     option_users.forEach((e) => {
                         shuffleUsers.push(e);
                     });
@@ -105,7 +105,10 @@ module.exports = {
                     fields.forEach((f) => {
                         reSuffleEmbed.addFields(f);
                     });
-                    await interaction.update({ embeds: [reSuffleEmbed], components: [row] });
+                    await interaction.update({
+                        embeds: [reSuffleEmbed],
+                        components: [row],
+                    });
                 }
             });
         } catch (e) {
