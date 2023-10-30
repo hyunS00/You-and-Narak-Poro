@@ -12,7 +12,6 @@ module.exports = {
     async execute(interaction) {
         if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
         if (interaction.channel.type == ChannelType.DM) return;
-        if (interaction.customId === 'retrySuffle') return;
         const command = client.commands.get(interaction.commandName);
         console.log(command);
         if (!command) return;

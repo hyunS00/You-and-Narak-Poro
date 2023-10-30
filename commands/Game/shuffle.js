@@ -14,14 +14,14 @@ module.exports = {
         .addStringOption((f) =>
             f
                 .setName('유저')
-                .setDescription('유저1 유저2 유저3.... 식으로 적어주세요')
+                .setDescription('유저1 유저2 유저3.... 식으로 적어주세요 띄어쓰기 필수!!!')
                 .setRequired(true)
         )
         .addStringOption((f) =>
             f
                 .setName('팀당분배인원')
                 .setDescription(
-                    'A인원 B인원... 예를 들어 13명을 4 4 5으로 분배하려면 4 4 5를 입력해주세요'
+                    'A명 B명... 예를 들어 13명을 4 4 5으로 분배하려면 4 4 5를 입력해주세요'
                 )
                 .setRequired(true)
         ),
