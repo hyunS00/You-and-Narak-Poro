@@ -1,10 +1,19 @@
+const axios = require('axios');
+const riotSearchIdURL = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/`;
 const { userMention } = require('discord.js');
 
 module.exports = {
     async deleteUserTier(interaction, userTierList_find, userTierList_Schema, option_userName) {
+        let riotAccountId;
+        await axios
+            .get(`${riotSearchIdURL}${option_userName}?api_key=${process.env.RIOTAPIKEY}`)
+            .then((response) => {
+                riotAccountId = response.data.accountId;
+                userid = response.data.name;
+            });
         if (userTierList_find) {
             try {
-                await userTierList_Schema.deleteOne({ userid: userTierList_find.userid });
+                await userTierList_Schema.deleteOne({ riotAccountId });
                 interaction.reply({
                     content: `${userMention(
                         userTierList_find.userid
