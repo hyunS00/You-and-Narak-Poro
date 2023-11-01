@@ -13,7 +13,7 @@ module.exports = {
         if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
         if (interaction.channel.type == ChannelType.DM) return;
         const command = client.commands.get(interaction.commandName);
-        console.log(command);
+        console.log('커멘드', command);
         if (!command) return;
 
         try {

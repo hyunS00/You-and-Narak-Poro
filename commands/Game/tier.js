@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField } = require('discord.js');
 const { setTier, updateTier, selectUserTier, deleteUserTier } = require('../../utils/tierUitils');
 
 const userTierList_Schema = require('../../models/userTierList');
@@ -55,7 +55,9 @@ const data = new SlashCommandBuilder()
             .addUserOption((f) => {
                 return f.setName('유저').setDescription('유저를 입력해주세요').setRequired(true);
             })
-    );
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+
 // .addSubcommand((subcommand) =>
 //     subcommand
 //         .setName('조회')
