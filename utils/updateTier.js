@@ -23,6 +23,7 @@ module.exports = {
         interaction,
         option_option,
         discordId,
+        option_user,
         userTierList_find,
         userTierList_Schema
     ) {
@@ -42,7 +43,7 @@ module.exports = {
                     });
                 } else {
                     interaction.reply({
-                        content: `${userMention(option_user.id)}님의 티어 ${
+                        content: `${userMention(discordId)}님의 티어 ${
                             userTierList_find.tier
                         }가 최고점입니다`,
                         ephemeral: true,
@@ -50,7 +51,7 @@ module.exports = {
                 }
             } else {
                 interaction.reply({
-                    content: `${userMention(option_user.id)}님의 티어 정보가 존재하지 않습니다`,
+                    content: `${userMention(discordId)}님의 티어 정보가 존재하지 않습니다`,
                     ephemeral: true,
                 });
             }
@@ -59,7 +60,7 @@ module.exports = {
                 if (userTier < 5) {
                     await userTierList_Schema.updateOne(
                         { userid: option_user.id },
-                        { userName: option_user.displayName, tier: --userTier }
+                        { userName: option_user.displayName, tier: ++userTier }
                     );
                     interaction.reply({
                         content: `${userMention(option_user.id)}님의 티어를 ${

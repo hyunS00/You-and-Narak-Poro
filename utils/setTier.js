@@ -8,14 +8,39 @@ module.exports = {
     //  *
     //  * @param {import("discord.js").ChatInputCommandInteraction} interaction
     //  */
-    async setTier(interaction, discordId, option_tier, userTierList_find, userTierList_Schema) {
-        let nickname = interaction.member.nickname;
+    async setTier(
+        interaction,
+        discordId,
+        option_tier,
+        userTierList_find,
+        userTierList_Schema,
+        username
+    ) {
         let riotAccountId;
-        console.log(discordId);
-        await axios.get(`${riotSearchIdURL}${nickname}?api_key=${RIOTAPIKEY}`).then((response) => {
-            riotAccountId = response.data.accountId;
-        });
+        let nickname;
         if (userTierList_find) {
+            nickname = userTierList_find.userName;
+            console.log(userTierList_find);
+        } else {
+            nickname = username;
+        }
+        await axios
+            .get(`${riotSearchIdURL}${nickname.split(' ').join('')}?api_key=${RIOTAPIKEY}`)
+            .then((response) => {
+                riotAccountId = response.data.accountId;
+                nickname = response.data.name;
+            })
+            .catch((error) => {
+                // console.log(error);
+                interaction.reply({
+                    content: `${userMention(discordId)}데이터 저장이 안됐습니다`,
+                    ephemeral: true,
+                });
+                return;
+            });
+
+        if (userTierList_find) {
+            nickname = userTierList_find.userName;
             await userTierList_Schema.updateOne(
                 { riotAccountId },
                 { userName: nickname, tier: option_tier }

@@ -131,7 +131,8 @@ module.exports = {
             interaction.user.id === process.env.DEVELOPERID
         ) {
             const option_user = interaction.options.getUser('유저');
-            const discordId = option_user.id;
+            console.log('옵션유저', option_user);
+            const discordId = option_user?.id;
             const command = interaction.options.getSubcommand();
 
             if (command === '삭제') {
@@ -159,26 +160,31 @@ module.exports = {
                     discordId,
                     option_tier,
                     userTierList_find,
-                    userTierList_Schema
+                    userTierList_Schema,
+                    option_user.username
                 );
             } else if (command === '직접설정') {
                 const option_tier = interaction.options.getString('티어');
+                const option_lolNick = interaction.options.getString('롤닉네임');
+                console.log(option_lolNick);
                 setTier(
                     interaction,
                     discordId,
                     option_tier,
                     userTierList_find,
-                    userTierList_Schema
+                    userTierList_Schema,
+                    option_lolNick
                 );
-            } else if (command === '조정') {
-                const option_option = interaction.options.getString('옵션');
-                updateTier(
-                    interaction,
-                    option_option,
-                    discordId,
-                    userTierList_find,
-                    userTierList_Schema
-                );
+                // } else if (command === '조정') {
+                //     const option_option = interaction.options.getString('옵션');
+                //     updateTier(
+                //         interaction,
+                //         option_option,
+                //         discordId,
+                //         option_user,
+                //         userTierList_find,
+                //         userTierList_Schema
+                //     );
             } else if (command === '확인') {
                 selectUserTier(interaction, discordId, userTierList_find);
             }
