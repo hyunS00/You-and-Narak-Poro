@@ -128,7 +128,8 @@ module.exports = {
     async execute(interaction) {
         if (
             interaction.user.id === process.env.ADMINID ||
-            interaction.user.id === process.env.DEVELOPERID
+            interaction.user.id === process.env.DEVELOPERID ||
+            interaction.user.id === process.env.ADMINID2
         ) {
             const option_user = interaction.options.getUser('유저');
             console.log('옵션유저', option_user);
