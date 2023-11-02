@@ -1,10 +1,16 @@
 const { SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField } = require('discord.js');
-const { setTier, updateTier, selectUserTier, deleteUserTier } = require('../../utils/tierUitils');
+const {
+    setTier,
+    updateTier,
+    selectUserTier,
+    deleteUserTier,
+    setTierAll,
+} = require('../../utils/tierUitils');
 
 const userTierList_Schema = require('../../models/userTierList');
 
 const data = new SlashCommandBuilder()
-    .setName('내전티어')
+    .setName('관리내전티어')
     .setDescription('내전 티어와 관련한 명령어입니다')
     .addSubcommand((subcommand) =>
         subcommand
@@ -32,6 +38,44 @@ const data = new SlashCommandBuilder()
     )
     .addSubcommand((subcommand) =>
         subcommand
+            .setName('직접설정')
+            .setDescription('(관리자 명령어) 직접 이름과 디스코드 유저 티어 정보를 설정합니다')
+            .addUserOption((f) => {
+                return f.setName('유저').setDescription('유저를 선택해주세요').setRequired(true);
+            })
+            .addStringOption((option) =>
+                option
+                    .setName('롤닉네임')
+                    .setDescription('디코 유저와 매핑할 롤 닉네임을 입력하세요')
+                    .setRequired(true)
+            )
+            .addStringOption((f) => {
+                return f
+                    .setName('티어')
+                    .setDescription('티어를 선택해주세요')
+                    .setRequired(true)
+                    .addChoices(
+                        { name: '1티어', value: '1' },
+                        { name: '2티어', value: '2' },
+                        { name: '3티어', value: '3' },
+                        { name: '4티어', value: '4' },
+                        { name: '5티어', value: '5' }
+                    );
+            })
+    )
+    .addSubcommand((subcommand) =>
+        subcommand
+            .setName('전체설정')
+            .setDescription('(관리자 명령어)전체 티어 정보를 설정합니다')
+            .addStringOption((option) =>
+                option
+                    .setName('전체정보')
+                    .setDescription('등록할 데이터들을 입력해주세요')
+                    .setRequired(true)
+            )
+    )
+    .addSubcommand((subcommand) =>
+        subcommand
             .setName('삭제')
             .setDescription('(관리자 명령어)저장된 티어정보를 삭제합니다')
             .addStringOption((option) =>
@@ -56,6 +100,14 @@ const data = new SlashCommandBuilder()
                 return f.setName('유저').setDescription('유저를 입력해주세요').setRequired(true);
             })
     )
+    .addSubcommand((subcommand) =>
+        subcommand
+            .setName('확인')
+            .setDescription('(관리자 명령어)데이터가 정상적으로 저장됐는지 확인합니다')
+            .addUserOption((option) =>
+                option.setName('유저').setDescription('검색할 유저를 입력하세요').setRequired(true)
+            )
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 // .addSubcommand((subcommand) =>
@@ -79,6 +131,7 @@ module.exports = {
             interaction.user.id === process.env.DEVELOPERID
         ) {
             const option_user = interaction.options.getUser('유저');
+            const discordId = option_user.id;
             const command = interaction.options.getSubcommand();
 
             if (command === '삭제') {
@@ -88,17 +141,31 @@ module.exports = {
                 });
                 deleteUserTier(interaction, deleteUser_find, userTierList_Schema, option_userName);
                 return;
+            } else if (command === '전체설정') {
+                const allData = interaction.options.getString('전체정보');
+                setTierAll(interaction, allData, userTierList_Schema);
+
+                return;
             }
 
             const userTierList_find = await userTierList_Schema.findOne({
-                userid: option_user.id,
+                userid: discordId,
             });
 
             if (command === '설정') {
                 const option_tier = interaction.options.getString('티어');
                 setTier(
                     interaction,
-                    option_user,
+                    discordId,
+                    option_tier,
+                    userTierList_find,
+                    userTierList_Schema
+                );
+            } else if (command === '직접설정') {
+                const option_tier = interaction.options.getString('티어');
+                setTier(
+                    interaction,
+                    discordId,
                     option_tier,
                     userTierList_find,
                     userTierList_Schema
@@ -108,10 +175,12 @@ module.exports = {
                 updateTier(
                     interaction,
                     option_option,
-                    option_user,
+                    discordId,
                     userTierList_find,
                     userTierList_Schema
                 );
+            } else if (command === '확인') {
+                selectUserTier(interaction, discordId, userTierList_find);
             }
         } else {
             interaction.reply({

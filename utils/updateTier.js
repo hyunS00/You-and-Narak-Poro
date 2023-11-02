@@ -22,7 +22,7 @@ module.exports = {
     async updateTier(
         interaction,
         option_option,
-        option_user,
+        discordId,
         userTierList_find,
         userTierList_Schema
     ) {
@@ -31,11 +31,11 @@ module.exports = {
             if (userTierList_find) {
                 if (userTier > 1) {
                     await userTierList_Schema.updateOne(
-                        { userid: option_user.id },
+                        { userid: discordId },
                         { userName: option_user.displayName, tier: --userTier }
                     );
                     interaction.reply({
-                        content: `${userMention(option_user.id)}님의 티어를 ${
+                        content: `${userMention(discordId)}님의 티어를 ${
                             userTierList_find.tier
                         }에서${userTier}로 조정했습니다`,
                         ephemeral: true,
