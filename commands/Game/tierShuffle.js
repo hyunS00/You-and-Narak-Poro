@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, userMention } = require('discord.js');
 const userTierList_Schema = require('../../models/userTierList');
+const { isHangul } = require('hangul-util');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -93,6 +94,8 @@ module.exports = {
             if (a.tier === b.tier) {
                 const upperCaseA = a.userName.toUpperCase();
                 const upperCaseB = b.userName.toUpperCase();
+                if (isHangul(upperCaseA) && !isHangul(upperCaseB)) return -1;
+                if (!isHangul(upperCaseA) && isHangul(upperCaseB)) return 1;
                 if (upperCaseA > upperCaseB) return 1;
                 if (upperCaseA < upperCaseB) return -1;
                 if (upperCaseA === upperCaseB) return 0;

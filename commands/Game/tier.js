@@ -12,30 +12,30 @@ const userTierList_Schema = require('../../models/userTierList');
 const data = new SlashCommandBuilder()
     .setName('관리내전티어')
     .setDescription('내전 티어와 관련한 명령어입니다')
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('설정')
-            .setDescription('(관리자 명령어)티어를 설정합니다')
-            .addUserOption((option) =>
-                option
-                    .setName('유저')
-                    .setDescription('티어 설정할 유저를 선택해주세요')
-                    .setRequired(true)
-            )
-            .addStringOption((f) => {
-                return f
-                    .setName('티어')
-                    .setDescription('티어를 선택해주세요')
-                    .setRequired(true)
-                    .addChoices(
-                        { name: '1티어', value: '1' },
-                        { name: '2티어', value: '2' },
-                        { name: '3티어', value: '3' },
-                        { name: '4티어', value: '4' },
-                        { name: '5티어', value: '5' }
-                    );
-            })
-    )
+    // .addSubcommand((subcommand) =>
+    //     subcommand
+    //         .setName('설정')
+    //         .setDescription('(관리자 명령어)티어를 설정합니다')
+    //         .addUserOption((option) =>
+    //             option
+    //                 .setName('유저')
+    //                 .setDescription('티어 설정할 유저를 선택해주세요')
+    //                 .setRequired(true)
+    //         )
+    //         .addStringOption((f) => {
+    //             return f
+    //                 .setName('티어')
+    //                 .setDescription('티어를 선택해주세요')
+    //                 .setRequired(true)
+    //                 .addChoices(
+    //                     { name: '1티어', value: '1' },
+    //                     { name: '2티어', value: '2' },
+    //                     { name: '3티어', value: '3' },
+    //                     { name: '4티어', value: '4' },
+    //                     { name: '5티어', value: '5' }
+    //                 );
+    //         })
+    // )
     .addSubcommand((subcommand) =>
         subcommand
             .setName('직접설정')
