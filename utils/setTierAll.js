@@ -10,21 +10,24 @@ module.exports = {
             arr[i] = str.split('\t');
         });
         console.log(splitArr);
-        const riotAccountId = [];
+        const riotData = [];
         for (let i = 0; i < splitArr.length; i++) {
             await axios
                 .get(`${riotSearchIdURL}${splitArr[i][0]}?api_key=${RIOTAPIKEY}`)
                 .then((response) => {
-                    riotAccountId.push(response.data.accountId);
+                    riotData.push({ id: response.data.accountId, name: response.data.name });
                 });
         }
         const noData = [];
         for (let i = 0; i < splitArr.length; i++) {
             const userFind = await userTierList_Schema.findOne({
-                riotAccountId: riotAccountId[i],
+                riotAccountId: riotData[i].id,
             });
             if (userFind) {
-                await userTierList_Schema.updateOne({ riotAccountId }, { tier: splitArr[i][2] });
+                await userTierList_Schema.updateOne(
+                    { riotAccountId: riotData[i].id },
+                    { tier: splitArr[i][2], userName: riotData.name }
+                );
             } else {
                 noData.push(splitArr[i][0]);
             }

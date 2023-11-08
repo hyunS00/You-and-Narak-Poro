@@ -17,18 +17,11 @@ module.exports = {
         username
     ) {
         let riotAccountId;
-        let nickname;
-        if (userTierList_find) {
-            nickname = userTierList_find.userName;
-            console.log(userTierList_find);
-        } else {
-            nickname = username;
-        }
         await axios
-            .get(`${riotSearchIdURL}${nickname.split(' ').join('')}?api_key=${RIOTAPIKEY}`)
+            .get(`${riotSearchIdURL}${username.split(' ').join('')}?api_key=${RIOTAPIKEY}`)
             .then((response) => {
                 riotAccountId = response.data.accountId;
-                nickname = response.data.name;
+                username = response.data.name;
             })
             .catch((error) => {
                 // console.log(error);
@@ -40,16 +33,14 @@ module.exports = {
             });
 
         if (userTierList_find) {
-            nickname = userTierList_find.userName;
             await userTierList_Schema.updateOne(
                 { riotAccountId },
-                { userName: nickname, tier: option_tier }
+                { userName: username, tier: option_tier }
             );
         } else {
-            console.log(riotAccountId);
             await new userTierList_Schema({
                 userid: discordId,
-                userName: nickname,
+                userName: username,
                 tier: option_tier,
                 riotAccountId,
             }).save();
