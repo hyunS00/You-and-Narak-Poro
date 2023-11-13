@@ -37,11 +37,11 @@ module.exports = {
             shuffleUsers.push(e);
         });
         shuffle(shuffleUsers);
-        console.log(shuffleUsers);
+
         if (shuffleUsers.includes('다영') && shuffleUsers.includes('유니')) {
             //다영 0번쨰
             const dayoungIndex = shuffleUsers.indexOf('다영');
-            console.log(dayoungIndex);
+
             let randomIndex = Math.floor(Math.random() * (3 - 0)) + 0;
             let tmp = shuffleUsers[randomIndex];
             shuffleUsers[randomIndex] = '다영';
@@ -49,13 +49,13 @@ module.exports = {
 
             //유니 마지막
             const uniIndex = shuffleUsers.indexOf('유니');
-            console.log(uniIndex);
+
             randomIndex = Math.floor(Math.random() * (shuffleUsers.length - 5)) + 5;
             tmp = shuffleUsers[randomIndex];
             shuffleUsers[randomIndex] = '유니';
             shuffleUsers[uniIndex] = tmp;
         }
-        console.log(shuffleUsers);
+
         let fields = [];
         option_teamsPlayersNum.forEach((v, i) => {
             const teamMembers = shuffleUsers.splice(0, v);
@@ -102,6 +102,23 @@ module.exports = {
                         shuffleUsers.push(e);
                     });
                     shuffle(shuffleUsers);
+                    if (shuffleUsers.includes('다영') && shuffleUsers.includes('유니')) {
+                        //다영 0번쨰
+                        const dayoungIndex = shuffleUsers.indexOf('다영');
+
+                        let randomIndex = Math.floor(Math.random() * (3 - 0)) + 0;
+                        let tmp = shuffleUsers[randomIndex];
+                        shuffleUsers[randomIndex] = '다영';
+                        shuffleUsers[dayoungIndex] = tmp;
+
+                        //유니 마지막
+                        const uniIndex = shuffleUsers.indexOf('유니');
+
+                        randomIndex = Math.floor(Math.random() * (shuffleUsers.length - 5)) + 5;
+                        tmp = shuffleUsers[randomIndex];
+                        shuffleUsers[randomIndex] = '유니';
+                        shuffleUsers[uniIndex] = tmp;
+                    }
                     let fields = [];
                     option_teamsPlayersNum.forEach((v, i) => {
                         const teamMembers = shuffleUsers.splice(0, v);
