@@ -42,15 +42,17 @@ module.exports = {
             //다영 0번쨰
             const dayoungIndex = shuffleUsers.indexOf('다영');
             console.log(dayoungIndex);
-            let tmp = shuffleUsers[0];
-            shuffleUsers[0] = '다영';
+            let randomIndex = Math.floor(Math.random() * (3 - 0)) + 0;
+            let tmp = shuffleUsers[randomIndex];
+            shuffleUsers[randomIndex] = '다영';
             shuffleUsers[dayoungIndex] = tmp;
 
             //유니 마지막
             const uniIndex = shuffleUsers.indexOf('유니');
             console.log(uniIndex);
-            tmp = shuffleUsers[shuffleUsers.length - 1];
-            shuffleUsers[shuffleUsers.length - 1] = '유니';
+            randomIndex = Math.floor(Math.random() * (shuffleUsers.length - 5)) + 5;
+            tmp = shuffleUsers[randomIndex];
+            shuffleUsers[randomIndex] = '유니';
             shuffleUsers[uniIndex] = tmp;
         }
         console.log(shuffleUsers);
