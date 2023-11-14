@@ -21,8 +21,8 @@ module.exports = {
                         canGiveTime / 1000
                     )}:R>)`,
                 });
+                return;
             }
-            return;
         }
 
         await gambling_Schema.updateOne(
@@ -32,7 +32,9 @@ module.exports = {
         );
 
         const embed = new EmbedBuilder()
-            .setDescription(`** 돈을 드렸어요 \n잔액${(gambling_find?.money || 0) + 10000}원**`)
+            .setDescription(
+                `** 💵10,000원을 드렸어요 \n💰잔액${(gambling_find?.money || 0) + 10000}원**`
+            )
             .setColor(0x7cc9c5);
 
         interaction.reply({ embeds: [embed] });
