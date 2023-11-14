@@ -32,6 +32,7 @@ module.exports = {
         );
 
         const embed = new EmbedBuilder()
+            .setTitle('돈 줘')
             .setDescription(
                 `** 💵10,000원을 드렸어요 \n💰잔액${(gambling_find?.money || 0) + 10000}원**`
             )

@@ -4,7 +4,7 @@ const gambling_Schema = require('../../models/gambling');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('순위')
+        .setName('도박순위')
         .setDescription('전체 도박 돈 순위를 보여줍니다'),
     /**
      *
@@ -25,7 +25,7 @@ module.exports = {
         for (let i = 0; i < gambling_find.length; i++) {
             const user = await interaction.client.users.fetch(gambling_find[i].userid);
             embed.addFields({
-                name: `${i + 1}. ${user.username}`,
+                name: `${i + 1}. ${user.globalName}`,
                 value: `${interaction.client.user.username} 머니 : ${gambling_find[
                     i
                 ].money.toLocaleString()}원`,
