@@ -31,10 +31,6 @@ module.exports = {
         const win_standard = Math.round(Math.random() * 100);
 
         if (win_standard > random_number) {
-            await gambling_Schema.updateMany(
-                { userid: interaction.user.id },
-                { money: gambling_find.money + bettingMoney }
-            );
             const embed = new EmbedBuilder()
                 .setTitle('이겼어요!')
                 .setDescription(
@@ -43,12 +39,13 @@ module.exports = {
                     }원**`
                 )
                 .setColor(0x7cc9c5);
-            interaction.reply({ embeds: [embed] });
-        } else {
+
             await gambling_Schema.updateMany(
                 { userid: interaction.user.id },
-                { money: gambling_find.money - bettingMoney }
+                { money: gambling_find.money + bettingMoney }
             );
+            interaction.reply({ embeds: [embed] });
+        } else {
             const embed = new EmbedBuilder()
                 .setTitle('졌어요ㅜㅜ!')
                 .setDescription(
@@ -57,6 +54,10 @@ module.exports = {
                     }원**`
                 )
                 .setColor(0x7cc9c5);
+            await gambling_Schema.updateMany(
+                { userid: interaction.user.id },
+                { money: gambling_find.money - bettingMoney }
+            );
             interaction.reply({ embeds: [embed] });
         }
     },
