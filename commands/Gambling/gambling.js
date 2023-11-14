@@ -22,7 +22,9 @@ module.exports = {
             return;
         }
         if (gambling_find.money < bettingMoney) {
-            interaction.reply({ content: '잔액이 부족해요ㅜㅜ' });
+            interaction.reply({
+                content: `잔액이 부족해요ㅜㅜ\n 현재 잔액: ${gambling_find.money}`,
+            });
             return;
         }
         const random_number = Math.round(Math.random() * 100);
@@ -36,7 +38,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('이겼어요!')
                 .setDescription(
-                    `** 이길확률\n${win_standard}%에서 승리했어요|\n+${bettingMoney}\n 현재 잔액: ${
+                    `** 이길확률\n${win_standard}%에서 승리했어요!\n💰💰💰💰+${bettingMoney}\n 현재 잔액: ${
                         gambling_find.money + bettingMoney
                     }원**`
                 )
