@@ -18,9 +18,9 @@ module.exports = {
         }
 
         const embed = new EmbedBuilder()
-            .setTitle('잔액 확인')
+            .setTitle('💰잔액 확인')
             .setDescription(
-                `**${interaction.user}님의 잔액은${gambling_find.money.toLocaleString()}원이에요**`
+                `💳${interaction.user}님의 잔액: ${gambling_find.money.toLocaleString()}원`
             )
             .setColor(0x7cc9c5);
 

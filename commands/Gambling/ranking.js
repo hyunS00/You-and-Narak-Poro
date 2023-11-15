@@ -26,7 +26,7 @@ module.exports = {
             const user = await interaction.client.users.fetch(gambling_find[i].userid);
             embed.addFields({
                 name: `${i + 1}. ${user.globalName}`,
-                value: `${interaction.client.user.username} 머니 : ${gambling_find[
+                value: `${interaction.client.user.username} 돈💰: ${gambling_find[
                     i
                 ].money.toLocaleString()}원`,
             });
