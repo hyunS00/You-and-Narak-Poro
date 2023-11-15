@@ -3,7 +3,7 @@ const gambling_Schema = require('../../models/gambling');
 const { EmbedBuilder } = require('@discordjs/builders');
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('잔액확인').setDescription('내 잔액을 확인합니다'),
+    data: new SlashCommandBuilder().setName('도박잔액확인').setDescription('내 잔액을 확인합니다'),
 
     /**
      *
