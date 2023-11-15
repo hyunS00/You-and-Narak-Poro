@@ -5,7 +5,7 @@ const {
     ButtonBuilder,
     ButtonStyle,
 } = require('discord.js');
-const { shuffle } = require('../../utils/shuffle');
+const { shuffle, divUser } = require('../../utils/shuffle');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -37,24 +37,7 @@ module.exports = {
             shuffleUsers.push(e);
         });
         shuffle(shuffleUsers);
-
-        if (shuffleUsers.includes('다영') && shuffleUsers.includes('유니')) {
-            //다영 0번쨰
-            const dayoungIndex = shuffleUsers.indexOf('다영');
-
-            let randomIndex = Math.floor(Math.random() * (3 - 0)) + 0;
-            let tmp = shuffleUsers[randomIndex];
-            shuffleUsers[randomIndex] = '다영';
-            shuffleUsers[dayoungIndex] = tmp;
-
-            //유니 마지막
-            const uniIndex = shuffleUsers.indexOf('유니');
-
-            randomIndex = Math.floor(Math.random() * (shuffleUsers.length - 5)) + 5;
-            tmp = shuffleUsers[randomIndex];
-            shuffleUsers[randomIndex] = '유니';
-            shuffleUsers[uniIndex] = tmp;
-        }
+        divUser(shuffleUsers, '다영', '유니');
 
         let fields = [];
         option_teamsPlayersNum.forEach((v, i) => {
@@ -85,7 +68,7 @@ module.exports = {
             .setStyle(ButtonStyle.Secondary);
         const row = new ActionRowBuilder().addComponents(reShuffle);
 
-        const response = await interaction.reply({ embeds: [shuffleEmbed], components: [row] });
+        await interaction.reply({ embeds: [shuffleEmbed], components: [row] });
 
         const filter = (interaction) => {
             return interaction.customId === `retrySuffle${date}`;
@@ -102,23 +85,8 @@ module.exports = {
                         shuffleUsers.push(e);
                     });
                     shuffle(shuffleUsers);
-                    if (shuffleUsers.includes('다영') && shuffleUsers.includes('유니')) {
-                        //다영 0번쨰
-                        const dayoungIndex = shuffleUsers.indexOf('다영');
+                    divUser(shuffleUsers, '다영', '유니');
 
-                        let randomIndex = Math.floor(Math.random() * (3 - 0)) + 0;
-                        let tmp = shuffleUsers[randomIndex];
-                        shuffleUsers[randomIndex] = '다영';
-                        shuffleUsers[dayoungIndex] = tmp;
-
-                        //유니 마지막
-                        const uniIndex = shuffleUsers.indexOf('유니');
-
-                        randomIndex = Math.floor(Math.random() * (shuffleUsers.length - 5)) + 5;
-                        tmp = shuffleUsers[randomIndex];
-                        shuffleUsers[randomIndex] = '유니';
-                        shuffleUsers[uniIndex] = tmp;
-                    }
                     let fields = [];
                     option_teamsPlayersNum.forEach((v, i) => {
                         const teamMembers = shuffleUsers.splice(0, v);
