@@ -1,6 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const gambling_Schema = require('../../models/gambling');
 const { EmbedBuilder } = require('@discordjs/builders');
+const { shuffle } = require('../../utils/shuffle');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,38 +28,102 @@ module.exports = {
             });
             return;
         }
-        const random_number = Math.round(Math.random() * 100);
-        const win_standard = Math.round(Math.random() * 100);
 
-        if (win_standard > random_number) {
-            const embed = new EmbedBuilder()
-                .setTitle('이겼어요!')
-                .setDescription(
-                    `** 이길확률\n${win_standard}%에서 승리했어요!\n💰💰💰💰+${bettingMoney}\n 현재 잔액: ${
-                        gambling_find.money + bettingMoney
-                    }원**`
-                )
-                .setColor(0x7cc9c5);
-
-            await gambling_Schema.updateMany(
-                { userid: interaction.user.id },
-                { money: gambling_find.money + bettingMoney }
-            );
-            interaction.reply({ embeds: [embed] });
-        } else {
-            const embed = new EmbedBuilder()
-                .setTitle('졌어요ㅜㅜ!')
-                .setDescription(
-                    `** 이길확률\n${win_standard}%에서 패배했어요..\n-${bettingMoney}\n현재 잔액: ${
-                        gambling_find.money - bettingMoney
-                    }원**`
-                )
-                .setColor(0x7cc9c5);
-            await gambling_Schema.updateMany(
-                { userid: interaction.user.id },
-                { money: gambling_find.money - bettingMoney }
-            );
-            interaction.reply({ embeds: [embed] });
+        const max = 5;
+        const min = 1;
+        const random = Math.floor(Math.random() * (max - min) + min);
+        const buttonActionRow = new ActionRowBuilder({ components: [] });
+        console.log(random);
+        const answerArr = ['true'];
+        for (let i = 0; i < random; i++) {
+            answerArr.push(`false${i}`);
         }
+        shuffle(answerArr);
+        console.log(answerArr);
+        const date = new Date();
+        for (let i = 0; i <= random; i++) {
+            const btn = new ButtonBuilder()
+                .setCustomId(`${interaction.user.id}${answerArr[i]}${date}`)
+                .setLabel(`${i + 1}`)
+                .setStyle(ButtonStyle.Primary);
+            buttonActionRow.addComponents(btn);
+        }
+
+        const embed = new EmbedBuilder()
+            .setTitle('야바위 도박')
+            .setDescription(
+                `** 버튼 하나를 클릭해주세요 \n제한시간: 20초\n 이길확률${Math.floor(
+                    100 / (random + 1)
+                )}%\n 베팅금액: ${bettingMoney}원**`
+            )
+            .setColor(0x7cc9c5);
+
+        interaction.reply({ embeds: [embed], components: [buttonActionRow] });
+        setTimeout(() => {
+            const embed = new EmbedBuilder()
+                .setTitle('시간 초과!')
+                .setDescription(
+                    `** 확률\n${Math.floor(100 / (random + 1))}%\n 베팅금액: ${bettingMoney}원**`
+                )
+                .setFooter({ text: '시간초과' })
+                .setColor(0x7cc9c5);
+            interaction.editReply({ embeds: [embed], components: [] });
+        }, 20000);
+        const filter = (interaction) => {
+            return (
+                interaction.customId === `${interaction.user.id}true${date}` ||
+                interaction.customId === `${interaction.user.id}false0${date}` ||
+                interaction.customId === `${interaction.user.id}false1${date}` ||
+                interaction.customId === `${interaction.user.id}false2${date}` ||
+                interaction.customId === `${interaction.user.id}false3${date}` ||
+                interaction.customId === `${interaction.user.id}false4${date}`
+            );
+        };
+        const collertor = interaction.channel.createMessageComponentCollector({
+            filter,
+            time: 20000,
+        });
+        collertor.on('collect', async (interaction) => {
+            console.log(interaction.customId, `${interaction.user.id}true`);
+            if (interaction.customId === `${interaction.user.id}true${date}`) {
+                const winEmbed = new EmbedBuilder()
+                    .setTitle('성공했어요!')
+                    .setDescription(
+                        `확률 ${Math.floor(
+                            100 / (random + 1)
+                        )}%에서 승리했어요!\n💰💰💰💰+${bettingMoney}\n 현재 잔액: ${
+                            gambling_find.money + bettingMoney
+                        }`
+                    )
+                    .setColor(0x7cc9c5);
+                await gambling_Schema.updateMany(
+                    { userid: interaction.user.id },
+                    { money: gambling_find.money + bettingMoney }
+                );
+                interaction.update({ embeds: [winEmbed], components: [] });
+            } else if (
+                interaction.customId === `${interaction.user.id}false0${date}` ||
+                interaction.customId === `${interaction.user.id}false1${date}` ||
+                interaction.customId === `${interaction.user.id}false2${date}` ||
+                interaction.customId === `${interaction.user.id}false3${date}` ||
+                interaction.customId === `${interaction.user.id}false4${date}`
+            ) {
+                const lossEmbed = new EmbedBuilder()
+                    .setTitle('졌어요ㅜㅜ!')
+                    .setDescription(
+                        `확률 ${Math.floor(
+                            100 / (random + 1)
+                        )}%에서에서 패배했어요..\n-${bettingMoney}\n현재 잔액: ${
+                            gambling_find.money - bettingMoney
+                        }원`
+                    )
+                    .setColor(0x7cc9c5);
+                await gambling_Schema.updateMany(
+                    { userid: interaction.user.id },
+                    { money: gambling_find.money - bettingMoney }
+                );
+                interaction.update({ embeds: [lossEmbed], components: [] });
+            }
+        });
     },
 };
