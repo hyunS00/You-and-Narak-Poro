@@ -29,7 +29,7 @@ module.exports = {
             return;
         }
 
-        const max = 5;
+        const max = 4;
         const min = 1;
         const random = Math.floor(Math.random() * (max - min) + min);
         const buttonActionRow = new ActionRowBuilder({ components: [] });
@@ -50,25 +50,15 @@ module.exports = {
         }
 
         const embed = new EmbedBuilder()
-            .setTitle('야바위 도박')
+            .setTitle('🎲 야바위 도박')
             .setDescription(
-                `** 버튼 하나를 클릭해주세요 \n제한시간: 20초\n 이길확률${Math.floor(
+                `버튼 하나를 클릭해주세요 \n제한시간: 20초\n 확률: ${Math.floor(
                     100 / (random + 1)
-                )}%\n 베팅금액: ${bettingMoney}원**`
+                )}%\n 베팅금액: ${bettingMoney}원`
             )
             .setColor(0x7cc9c5);
 
         interaction.reply({ embeds: [embed], components: [buttonActionRow] });
-        setTimeout(() => {
-            const embed = new EmbedBuilder()
-                .setTitle('시간 초과!')
-                .setDescription(
-                    `** 확률\n${Math.floor(100 / (random + 1))}%\n 베팅금액: ${bettingMoney}원**`
-                )
-                .setFooter({ text: '시간초과' })
-                .setColor(0x7cc9c5);
-            interaction.editReply({ embeds: [embed], components: [] });
-        }, 20000);
         const filter = (interaction) => {
             return (
                 interaction.customId === `${interaction.user.id}true${date}` ||
@@ -84,12 +74,11 @@ module.exports = {
             time: 20000,
         });
         collertor.on('collect', async (interaction) => {
-            console.log(interaction.customId, `${interaction.user.id}true`);
             if (interaction.customId === `${interaction.user.id}true${date}`) {
                 const winEmbed = new EmbedBuilder()
                     .setTitle('성공했어요!')
                     .setDescription(
-                        `확률 ${Math.floor(
+                        `확률: ${Math.floor(
                             100 / (random + 1)
                         )}%에서 승리했어요!\n💰💰💰💰+${bettingMoney}\n 현재 잔액: ${
                             gambling_find.money + bettingMoney
@@ -111,7 +100,7 @@ module.exports = {
                 const lossEmbed = new EmbedBuilder()
                     .setTitle('졌어요ㅜㅜ!')
                     .setDescription(
-                        `확률 ${Math.floor(
+                        `확률: ${Math.floor(
                             100 / (random + 1)
                         )}%에서에서 패배했어요..\n-${bettingMoney}\n현재 잔액: ${
                             gambling_find.money - bettingMoney
