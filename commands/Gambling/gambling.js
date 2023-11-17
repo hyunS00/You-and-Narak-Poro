@@ -54,7 +54,9 @@ module.exports = {
             .setDescription(
                 `버튼 하나를 클릭해주세요 \n제한시간: 20초\n 확률: ${Math.floor(
                     100 / (random + 1)
-                )}%\n 베팅금액: ${bettingMoney}원`
+                )}%\n 베팅전 잔액: ${gambling_find.money} \n 베팅금액: ${bettingMoney}원 성공하면 ${
+                    random + 1
+                }배!`
             )
             .setColor(0x7cc9c5);
 
@@ -75,21 +77,27 @@ module.exports = {
         });
         collertor.on('collect', async (interaction) => {
             if (interaction.customId === `${interaction.user.id}true${date}`) {
+                buttonActionRow.components.forEach((obj) => {
+                    if (obj.data.custom_id === `${interaction.user.id}true${date}`) {
+                        obj.setStyle(ButtonStyle.Success).setDisabled(true);
+                    } else {
+                        obj.setStyle(ButtonStyle.Danger).setDisabled(true);
+                    }
+                });
                 const winEmbed = new EmbedBuilder()
                     .setTitle('성공했어요!')
                     .setDescription(
-                        `확률: ${Math.floor(
-                            100 / (random + 1)
-                        )}%에서 승리했어요!\n💰💰💰💰+${bettingMoney}\n 현재 잔액: ${
-                            gambling_find.money + bettingMoney
-                        }`
+                        `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${
+                            bettingMoney * random
+                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * random}`
                     )
                     .setColor(0x7cc9c5);
+
                 await gambling_Schema.updateMany(
                     { userid: interaction.user.id },
-                    { money: gambling_find.money + bettingMoney }
+                    { money: gambling_find.money + bettingMoney * random }
                 );
-                interaction.update({ embeds: [winEmbed], components: [] });
+                interaction.update({ embeds: [winEmbed], components: [buttonActionRow] });
             } else if (
                 interaction.customId === `${interaction.user.id}false0${date}` ||
                 interaction.customId === `${interaction.user.id}false1${date}` ||
@@ -97,6 +105,13 @@ module.exports = {
                 interaction.customId === `${interaction.user.id}false3${date}` ||
                 interaction.customId === `${interaction.user.id}false4${date}`
             ) {
+                buttonActionRow.components.forEach((obj) => {
+                    if (obj.data.custom_id === `${interaction.user.id}true${date}`) {
+                        obj.setStyle(ButtonStyle.Success).setDisabled(true);
+                    } else {
+                        obj.setStyle(ButtonStyle.Danger).setDisabled(true);
+                    }
+                });
                 const lossEmbed = new EmbedBuilder()
                     .setTitle('졌어요ㅜㅜ!')
                     .setDescription(
@@ -111,7 +126,7 @@ module.exports = {
                     { userid: interaction.user.id },
                     { money: gambling_find.money - bettingMoney }
                 );
-                interaction.update({ embeds: [lossEmbed], components: [] });
+                interaction.update({ embeds: [lossEmbed], components: [buttonActionRow] });
             }
         });
     },
