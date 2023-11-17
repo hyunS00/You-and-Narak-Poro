@@ -16,19 +16,17 @@ module.exports = {
             .sort([['money', 'descending']])
             .limit(10)
             .exec();
-
+        const numberOne = await interaction.client.users.fetch(gambling_find[0].userid);
         const embed = new EmbedBuilder()
-            .setTitle(`${interaction.client.user.username} 도박 순위 💸`)
+            .setTitle(`도박 순위 💸`)
             .setColor(0x7cc9c5)
-            .setThumbnail(interaction.client.user.displayAvatarURL());
+            .setThumbnail(numberOne.displayAvatarURL());
 
         for (let i = 0; i < gambling_find.length; i++) {
             const user = await interaction.client.users.fetch(gambling_find[i].userid);
             embed.addFields({
                 name: `${i + 1}. ${user.globalName}`,
-                value: `${interaction.client.user.username} 돈💰: ${gambling_find[
-                    i
-                ].money.toLocaleString()}원`,
+                value: `💰 ${gambling_find[i].money.toLocaleString()}원`,
             });
         }
 
