@@ -29,9 +29,13 @@ module.exports = {
             return;
         }
 
-        const max = 4;
-        const min = 1;
-        const random = Math.floor(Math.random() * (max - min) + min);
+        const max = 5;
+        const min = 0;
+        const randomArr = [1, 2, 1, 2, 3];
+        const randomIndex = Math.floor(Math.random() * (max - min) + min);
+        console.log(randomIndex);
+        const random = randomArr[randomIndex];
+
         const buttonActionRow = new ActionRowBuilder({ components: [] });
         console.log(random);
         const answerArr = ['true'];
