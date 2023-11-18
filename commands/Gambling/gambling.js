@@ -59,12 +59,12 @@ module.exports = {
                 `버튼 하나를 클릭해주세요 \n제한시간: 20초\n 확률: ${Math.floor(
                     100 / (random + 1)
                 )}%\n 베팅전 잔액: ${gambling_find.money} \n 베팅금액: ${bettingMoney}원 성공하면 ${
-                    random + 1
+                    random * 0.5 + 1
                 }배!`
             )
             .setColor(0x7cc9c5);
-
         interaction.reply({ embeds: [embed], components: [buttonActionRow] });
+
         const filter = (interaction) => {
             return (
                 interaction.customId === `${interaction.user.id}true${date}` ||
@@ -92,14 +92,14 @@ module.exports = {
                     .setTitle('성공했어요!')
                     .setDescription(
                         `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${
-                            bettingMoney * random
-                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * random}`
+                            bettingMoney * random * 0.5
+                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * (random * 0.5)}`
                     )
                     .setColor(0x7cc9c5);
 
                 await gambling_Schema.updateMany(
                     { userid: interaction.user.id },
-                    { money: gambling_find.money + bettingMoney * random }
+                    { money: gambling_find.money + bettingMoney * (random * 0.5) }
                 );
                 interaction.update({ embeds: [winEmbed], components: [buttonActionRow] });
             } else if (
