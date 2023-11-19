@@ -88,7 +88,9 @@ module.exports = {
                         obj.setStyle(ButtonStyle.Danger).setDisabled(true);
                     }
                 });
-
+                const gambling_find = await gambling_Schema.findOne({
+                    userid: interaction.user.id,
+                });
                 const winEmbed = new EmbedBuilder()
                     .setTitle('성공했어요!')
                     .setDescription(
@@ -117,7 +119,9 @@ module.exports = {
                         obj.setStyle(ButtonStyle.Danger).setDisabled(true);
                     }
                 });
-
+                const gambling_find = await gambling_Schema.findOne({
+                    userid: interaction.user.id,
+                });
                 const lossEmbed = new EmbedBuilder()
                     .setTitle('졌어요ㅜㅜ!')
                     .setDescription(
