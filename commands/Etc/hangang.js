@@ -4,7 +4,7 @@ const data = new SlashCommandBuilder().setName('한강수온').setDescription('�
 
 async function getHanganData() {
     try {
-        const hangangData = await fetch('http://hangang.dkserver.wo.tc');
+        const hangangData = await fetch('https://api.hangang.life/');
         return hangangData.json();
     } catch (error) {
         console.error('Error fetching champion data:', error);
@@ -20,12 +20,13 @@ module.exports = {
      */
     async execute(interaction) {
         const hangangData = await getHanganData();
-        const time = hangangData.time.split(' ');
-        if (hangangData.result == 'true') {
+        if (hangangData.STATUS == 'OK') {
             const embed = new EmbedBuilder()
                 .setTitle('한강 수온')
-                .setDescription(`${hangangData.temp}도! 따뜻하네요?`)
-                .setFooter({ text: `측정시간: ${time[0]} ${time[1]}` })
+                .setDescription(`${hangangData.DATAs.DATA.HANGANG['노량진'].TEMP}도! 따뜻하네요?`)
+                .setFooter({
+                    text: `측정시간: ${hangangData.DATAs.DATA.HANGANG['노량진'].LAST_UPDATE}\n측정장소: 노량진`,
+                })
                 .setColor(0x7cc9c5);
 
             interaction.reply({ embeds: [embed] });
