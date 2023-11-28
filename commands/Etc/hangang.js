@@ -14,9 +14,9 @@ module.exports = {
         if (hangangData.STATUS == 'OK') {
             const embed = new EmbedBuilder()
                 .setTitle('한강 수온')
-                .setDescription(`${hangangData.DATAs.DATA.HANGANG['노량진'].TEMP}도! 따뜻하네요?`)
+                .setDescription(`${hangangData.DATAs.DATA.HANGANG['탄천'].TEMP}도! 따뜻하네요?`)
                 .setFooter({
-                    text: `측정시간: ${hangangData.DATAs.DATA.HANGANG['노량진'].LAST_UPDATE}\n측정장소: 노량진`,
+                    text: `측정시간: ${hangangData.DATAs.DATA.HANGANG['탄천'].LAST_UPDATE}\n측정장소: 탄천`,
                 })
                 .setColor(0x7cc9c5);
 

@@ -13,7 +13,7 @@ module.exports = {
         const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
 
         if (gambling_find) {
-            const canGiveTime = gambling_find.cooltime + 360 * 60 * 1000;
+            const canGiveTime = gambling_find.cooltime + 180 * 60 * 1000;
 
             if (canGiveTime > Date.now()) {
                 interaction.reply({
