@@ -1,16 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { getHanganData } = require('../../utils/getHangangData');
 
 const data = new SlashCommandBuilder().setName('한강수온').setDescription('한강 수온을 체크합니다');
-
-async function getHanganData() {
-    try {
-        const hangangData = await fetch('https://api.hangang.life/');
-        return hangangData.json();
-    } catch (error) {
-        console.error('Error fetching champion data:', error);
-        throw error; // Rethrow the error to handle it further, if needed.
-    }
-}
 
 module.exports = {
     data,
