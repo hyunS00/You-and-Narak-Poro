@@ -12,41 +12,14 @@ const userTierList_Schema = require('../../models/userTierList');
 const data = new SlashCommandBuilder()
     .setName('관리내전티어')
     .setDescription('내전 티어와 관련한 명령어입니다')
-    // .addSubcommand((subcommand) =>
-    //     subcommand
-    //         .setName('설정')
-    //         .setDescription('(관리자 명령어)티어를 설정합니다')
-    //         .addUserOption((option) =>
-    //             option
-    //                 .setName('유저')
-    //                 .setDescription('티어 설정할 유저를 선택해주세요')
-    //                 .setRequired(true)
-    //         )
-    //         .addStringOption((f) => {
-    //             return f
-    //                 .setName('티어')
-    //                 .setDescription('티어를 선택해주세요')
-    //                 .setRequired(true)
-    //                 .addChoices(
-    //                     { name: '1티어', value: '1' },
-    //                     { name: '2티어', value: '2' },
-    //                     { name: '3티어', value: '3' },
-    //                     { name: '4티어', value: '4' },
-    //                     { name: '5티어', value: '5' }
-    //                 );
-    //         })
-    // )
     .addSubcommand((subcommand) =>
         subcommand
-            .setName('직접설정')
-            .setDescription('(관리자 명령어) 직접 이름과 디스코드 유저 티어 정보를 설정합니다')
-            .addUserOption((f) => {
-                return f.setName('유저').setDescription('유저를 선택해주세요').setRequired(true);
-            })
-            .addStringOption((option) =>
+            .setName('설정')
+            .setDescription('(관리자 명령어)티어를 설정합니다')
+            .addUserOption((option) =>
                 option
-                    .setName('롤닉네임')
-                    .setDescription('디코 유저와 매핑할 롤 닉네임을 입력하세요')
+                    .setName('유저')
+                    .setDescription('티어 설정할 유저를 선택해주세요')
                     .setRequired(true)
             )
             .addStringOption((f) => {
@@ -63,17 +36,38 @@ const data = new SlashCommandBuilder()
                     );
             })
     )
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('전체설정')
-            .setDescription('(관리자 명령어)전체 티어 정보를 설정합니다')
-            .addStringOption((option) =>
-                option
-                    .setName('전체정보')
-                    .setDescription('등록할 데이터들을 입력해주세요')
-                    .setRequired(true)
-            )
-    )
+    // .addSubcommand((subcommand) =>
+    //     subcommand
+    //         .setName('직접설정')
+    //         .setDescription('(관리자 명령어) 직접 이름과 디스코드 유저 티어 정보를 설정합니다')
+    //         .addUserOption((f) => {
+    //             return f.setName('유저').setDescription('유저를 선택해주세요').setRequired(true);
+    //         })
+    //         .addStringOption((f) => {
+    //             return f
+    //                 .setName('티어')
+    //                 .setDescription('티어를 선택해주세요')
+    //                 .setRequired(true)
+    //                 .addChoices(
+    //                     { name: '1티어', value: '1' },
+    //                     { name: '2티어', value: '2' },
+    //                     { name: '3티어', value: '3' },
+    //                     { name: '4티어', value: '4' },
+    //                     { name: '5티어', value: '5' }
+    //                 );
+    //         })
+    // )
+    // .addSubcommand((subcommand) =>
+    //     subcommand
+    //         .setName('전체설정')
+    //         .setDescription('(관리자 명령어)전체 티어 정보를 설정합니다')
+    //         .addStringOption((option) =>
+    //             option
+    //                 .setName('전체정보')
+    //                 .setDescription('등록할 데이터들을 입력해주세요')
+    //                 .setRequired(true)
+    //         )
+    // )
     .addSubcommand((subcommand) =>
         subcommand
             .setName('삭제')
@@ -85,21 +79,21 @@ const data = new SlashCommandBuilder()
                     .setRequired(true)
             )
     )
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('조정')
-            .setDescription('(관리자 명령어)티어를 조정합니다')
-            .addStringOption((f) =>
-                f
-                    .setName('옵션')
-                    .setDescription('옵션을 선택해 주세요')
-                    .setRequired(true)
-                    .addChoices({ name: '상승', value: '상승' }, { name: '하락', value: '하락' })
-            )
-            .addUserOption((f) => {
-                return f.setName('유저').setDescription('유저를 입력해주세요').setRequired(true);
-            })
-    )
+    // .addSubcommand((subcommand) =>
+    //     subcommand
+    //         .setName('조정')
+    //         .setDescription('(관리자 명령어)티어를 조정합니다')
+    //         .addStringOption((f) =>
+    //             f
+    //                 .setName('옵션')
+    //                 .setDescription('옵션을 선택해 주세요')
+    //                 .setRequired(true)
+    //                 .addChoices({ name: '상승', value: '상승' }, { name: '하락', value: '하락' })
+    //         )
+    //         .addUserOption((f) => {
+    //             return f.setName('유저').setDescription('유저를 입력해주세요').setRequired(true);
+    //         })
+    // )
     .addSubcommand((subcommand) =>
         subcommand
             .setName('확인')
@@ -143,12 +137,13 @@ module.exports = {
                 });
                 deleteUserTier(interaction, deleteUser_find, userTierList_Schema, option_userName);
                 return;
-            } else if (command === '전체설정') {
-                const allData = interaction.options.getString('전체정보');
-                setTierAll(interaction, allData, userTierList_Schema);
-
-                return;
             }
+            // else if (command === '전체설정') {
+            //     const allData = interaction.options.getString('전체정보');
+            //     setTierAll(interaction, allData, userTierList_Schema);
+
+            //     return;
+            // }
 
             const userTierList_find = await userTierList_Schema.findOne({
                 userid: discordId,
@@ -164,29 +159,31 @@ module.exports = {
                     userTierList_Schema,
                     option_user.username
                 );
-            } else if (command === '직접설정') {
-                const option_tier = interaction.options.getString('티어');
-                const option_lolNick = interaction.options.getString('롤닉네임');
-                console.log(option_lolNick);
-                setTier(
-                    interaction,
-                    discordId,
-                    option_tier,
-                    userTierList_find,
-                    userTierList_Schema,
-                    option_lolNick
-                );
-                // } else if (command === '조정') {
-                //     const option_option = interaction.options.getString('옵션');
-                //     updateTier(
-                //         interaction,
-                //         option_option,
-                //         discordId,
-                //         option_user,
-                //         userTierList_find,
-                //         userTierList_Schema
-                //     );
-            } else if (command === '확인') {
+            }
+            // else if (command === '직접설정') {
+            // const option_tier = interaction.options.getString('티어');
+            // const option_lolNick = interaction.options.getString('롤닉네임');
+            // console.log(option_lolNick);
+            // setTier(
+            //     interaction,
+            //     discordId,
+            //     option_tier,
+            //     userTierList_find,
+            //     userTierList_Schema,
+            //     option_lolNick
+            // );
+            // } else if (command === '조정') {
+            //     const option_option = interaction.options.getString('옵션');
+            //     updateTier(
+            //         interaction,
+            //         option_option,
+            //         discordId,
+            //         option_user,
+            //         userTierList_find,
+            //         userTierList_Schema
+            //     );
+            // }
+            else if (command === '확인') {
                 selectUserTier(interaction, discordId, userTierList_find);
             }
         } else {

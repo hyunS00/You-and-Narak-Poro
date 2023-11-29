@@ -16,33 +16,29 @@ module.exports = {
         userTierList_Schema,
         username
     ) {
-        let riotAccountId;
-        await axios
-            .get(`${riotSearchIdURL}${username.split(' ').join('')}?api_key=${RIOTAPIKEY}`)
-            .then((response) => {
-                riotAccountId = response.data.accountId;
-                username = response.data.name;
-            })
-            .catch((error) => {
-                // console.log(error);
-                interaction.reply({
-                    content: `${userMention(discordId)}데이터 저장이 안됐습니다`,
-                    ephemeral: true,
-                });
-                return;
-            });
+        // let riotAccountId;
+        // await axios
+        //     .get(`${riotSearchIdURL}${username.split(' ').join('')}?api_key=${RIOTAPIKEY}`)
+        //     .then((response) => {
+        //         riotAccountId = response.data.accountId;
+        //         username = response.data.name;
+        //     })
+        //     .catch((error) => {
+        //         // console.log(error);
+        //         interaction.reply({
+        //             content: `${userMention(discordId)}데이터 저장이 안됐습니다`,
+        //             ephemeral: true,
+        //         });
+        //         return;
+        //     });
 
         if (userTierList_find) {
-            await userTierList_Schema.updateOne(
-                { riotAccountId },
-                { userName: username, tier: option_tier }
-            );
+            await userTierList_Schema.updateOne({ userid: discordId }, { tier: option_tier });
         } else {
             await new userTierList_Schema({
                 userid: discordId,
                 userName: username,
                 tier: option_tier,
-                riotAccountId,
             }).save();
         }
         interaction.reply({
