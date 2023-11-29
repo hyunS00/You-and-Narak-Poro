@@ -96,13 +96,13 @@ module.exports = {
                     .setDescription(
                         `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${
                             bettingMoney * random
-                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * (random + 1)}`
+                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * random}`
                     )
                     .setColor(0x7cc9c5);
 
                 await gambling_Schema.updateMany(
                     { userid: interaction.user.id },
-                    { money: gambling_find.money + bettingMoney * (random + 1) }
+                    { money: gambling_find.money + bettingMoney * random }
                 );
                 interaction.update({ embeds: [winEmbed], components: [buttonActionRow] });
             } else if (
