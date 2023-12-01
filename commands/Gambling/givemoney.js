@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(interaction) {
         const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
-        const moneyTsble = [9000, 10000, 10000, 10000, 10000, 11000, 15000, 15000, 20000, 30000];
+        const moneyTsble = [9000, 10000, 10000, 10000, 10000, 10000, 10000, 11000, 15000, 20000];
         const min = 0;
         const max = 10;
         const money = moneyTsble[Math.floor(Math.random() * (max - min) + min)];
