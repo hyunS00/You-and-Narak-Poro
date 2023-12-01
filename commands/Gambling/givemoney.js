@@ -11,7 +11,10 @@ module.exports = {
      */
     async execute(interaction) {
         const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
-
+        const moneyTsble = [9000, 10000, 10000, 10000, 10000, 11000, 15000, 15000, 20000, 30000];
+        const min = 0;
+        const max = 10;
+        const money = moneyTsble[Math.floor(Math.random() * (max - min) + min)];
         if (gambling_find) {
             const canGiveTime = gambling_find.cooltime + 180 * 60 * 1000;
 
@@ -27,14 +30,14 @@ module.exports = {
 
         await gambling_Schema.updateOne(
             { userid: interaction.user.id },
-            { money: (gambling_find?.money || 0) + 10000, cooltime: Date.now() },
+            { money: (gambling_find?.money || 0) + money, cooltime: Date.now() },
             { upsert: true }
         );
 
         const embed = new EmbedBuilder()
             .setTitle('돈 줘')
             .setDescription(
-                `** 💵10,000원을 드렸어요 \n💰잔액${(gambling_find?.money || 0) + 10000}원**`
+                `** 💵${money}원을 드렸어요 \n💰잔액${(gambling_find?.money || 0) + money}원**`
             )
             .setColor(0x7cc9c5);
 
