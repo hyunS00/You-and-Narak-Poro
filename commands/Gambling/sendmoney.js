@@ -35,7 +35,7 @@ module.exports = {
         }
         if (Remittance_gambling_find.money < sendMoney) {
             interaction.reply({
-                content: `잔액이 부족해요ㅜㅜ\n 현재 잔액: ${Remittance_gambling_find.money}`,
+                content: `잔액이 부족해요ㅜㅜ\n 현재 잔액: ${Remittance_gambling_find.money.toLocaleString()}`,
             });
             return;
         }
@@ -53,7 +53,9 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setTitle('돈 주기')
             .setDescription(
-                `${interaction.user}님이 ${option_user}님에게 💵${sendMoney}원을 송금했어요!`
+                `${
+                    interaction.user
+                }님이 ${option_user}님에게 💵${sendMoney.toLocaleString()}원을 송금했어요!`
             )
             .setColor(0x7cc9c5);
 

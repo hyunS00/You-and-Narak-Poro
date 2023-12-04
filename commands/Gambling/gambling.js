@@ -24,7 +24,7 @@ module.exports = {
         }
         if (gambling_find.money < bettingMoney) {
             interaction.reply({
-                content: `잔액이 부족해요ㅜㅜ\n 현재 잔액: ${gambling_find.money}`,
+                content: `잔액이 부족해요ㅜㅜ\n 현재 잔액: ${gambling_find.money.toLocaleString()}`,
             });
             return;
         }
@@ -56,7 +56,7 @@ module.exports = {
             .setDescription(
                 `버튼 하나를 클릭해주세요 \n제한시간: 20초\n 확률: ${Math.floor(
                     100 / (random + 1)
-                )}%\n 베팅전 잔액: ${gambling_find.money} \n 베팅금액: ${bettingMoney}원 성공하면 ${
+                )}%\n 베팅전 잔액: ${gambling_find.money.toLocaleString()} \n 베팅금액: ${bettingMoney.toLocaleString()}원 성공하면 ${
                     random + 1
                 }배!`
             )
@@ -96,7 +96,10 @@ module.exports = {
                     .setDescription(
                         `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${
                             bettingMoney * random
-                        }\n 현재 잔액: ${gambling_find.money + bettingMoney * random}`
+                        }\n 현재 잔액: ${(
+                            gambling_find.money +
+                            bettingMoney * random
+                        ).toLocaleString()}`
                     )
                     .setColor(0x7cc9c5);
 
@@ -127,9 +130,9 @@ module.exports = {
                     .setDescription(
                         `확률: ${Math.floor(
                             100 / (random + 1)
-                        )}%에서에서 패배했어요..\n-${bettingMoney}\n현재 잔액: ${
+                        )}%에서에서 패배했어요..\n-${bettingMoney.toLocaleString()}\n현재 잔액: ${(
                             gambling_find.money - bettingMoney
-                        }원`
+                        ).toLocaleString()}원`
                     )
                     .setColor(0x7cc9c5);
 

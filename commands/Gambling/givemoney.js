@@ -38,7 +38,9 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setTitle('돈 줘')
             .setDescription(
-                `** 💵${money}원을 드렸어요 \n💰잔액${(gambling_find?.money || 0) + money}원**`
+                `** 💵${money.toLocaleString()}원을 드렸어요 \n💰잔액${(
+                    (gambling_find?.money || 0) + money
+                ).toLocaleString()}원**`
             )
             .setColor(0x7cc9c5);
 
