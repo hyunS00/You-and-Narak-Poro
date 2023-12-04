@@ -39,7 +39,7 @@ module.exports = {
             .setTitle('돈 줘')
             .setDescription(
                 `** 💵${money.toLocaleString()}원을 드렸어요 \n💰잔액${(
-                    (gambling_find?.money || 0) + money
+                    (gambling_find?.money || 0).toLocaleString() + money
                 ).toLocaleString()}원**`
             )
             .setColor(0x7cc9c5);

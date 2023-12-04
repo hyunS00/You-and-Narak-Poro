@@ -85,7 +85,6 @@ module.exports = {
                         shuffleUsers.push(e);
                     });
                     shuffle(shuffleUsers);
-                    divUser(shuffleUsers, '다영', '유니');
 
                     let fields = [];
                     option_teamsPlayersNum.forEach((v, i) => {

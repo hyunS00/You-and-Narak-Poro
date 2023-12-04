@@ -94,9 +94,9 @@ module.exports = {
                 const winEmbed = new EmbedBuilder()
                     .setTitle('성공했어요!')
                     .setDescription(
-                        `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${
+                        `확률: ${Math.floor(100 / (random + 1))}%에서 승리했어요!\n💰💰💰💰+${(
                             bettingMoney * random
-                        }\n 현재 잔액: ${(
+                        ).toLocaleString()}\n 현재 잔액: ${(
                             gambling_find.money +
                             bettingMoney * random
                         ).toLocaleString()}`
