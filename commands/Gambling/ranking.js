@@ -24,7 +24,6 @@ module.exports = {
 
         for (let i = 0; i < gambling_find.length; i++) {
             const user = await interaction.client.users.fetch(gambling_find[i].userid);
-            console.log(user);
             embed.addFields({
                 name: `${i + 1}. ${user.globalName ? user.globalName : user.username}`,
                 value: `💰 ${gambling_find[i].money.toLocaleString()}원`,
