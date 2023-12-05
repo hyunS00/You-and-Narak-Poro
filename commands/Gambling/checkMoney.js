@@ -19,13 +19,13 @@ module.exports = {
      */
     async execute(interaction) {
         const option_user = interaction.options.getUser('확인할유저');
-        let userid;
+        let user;
         if (option_user) {
-            userid = option_user.id;
+            user = option_user;
         } else {
-            userid = interaction.user.id;
+            user = interaction.user;
         }
-        const gambling_find = await gambling_Schema.findOne({ userid });
+        const gambling_find = await gambling_Schema.findOne({ userid: user.id });
 
         if (!gambling_find) {
             interaction.reply({ content: `데이터가 존재하지 않습니다` });
@@ -34,7 +34,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setTitle('💰잔액 확인')
-            .setDescription(`💳${userid}님의 잔액: ${gambling_find.money.toLocaleString()}원`)
+            .setDescription(`💳${user}님의 잔액: ${gambling_find.money.toLocaleString()}원`)
             .setColor(0x7cc9c5);
 
         interaction.reply({ embeds: [embed] });
