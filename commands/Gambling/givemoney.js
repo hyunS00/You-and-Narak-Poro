@@ -24,7 +24,7 @@ module.exports = {
         // const money = moneyTsble[Math.floor(Math.random() * (max - min) + min)];
         const money = 50000;
         if (gambling_find) {
-            const canGiveTime = gambling_find.cooltime + 180 * 60 * 1000;
+            const canGiveTime = gambling_find.cooltime + 60 * 60 * 1000;
 
             if (canGiveTime > Date.now()) {
                 interaction.reply({
