@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, MessageMentions } = require('discord.js');
 const gambling_Schema = require('../../models/gambling');
 const { EmbedBuilder } = require('@discordjs/builders');
+const { throttle } = require('../../utils/throttle');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,6 +22,12 @@ module.exports = {
      * @param {import("discord.js").CommandInteraction} interaction
      */
     async execute(interaction) {
+        if (throttle()) {
+            interaction.reply({
+                content: `너무 빨리 실행하고 있어요 머리 좀 식히세요..!`,
+            });
+            return;
+        }
         const option_user = interaction.options.getUser('송금할유저');
         const sendMoney = interaction.options.getInteger('송금금액', true);
         console.log(option_user);

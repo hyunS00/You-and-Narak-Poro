@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const gambling_Schema = require('../../models/gambling');
 const { EmbedBuilder } = require('@discordjs/builders');
+const { throttle } = require('../../utils/throttle');
 
 module.exports = {
     data: new SlashCommandBuilder().setName('돈줘').setDescription('돈을 받습니다'),
@@ -10,6 +11,12 @@ module.exports = {
      * @param {import("discord.js").CommandInteraction} interaction
      */
     async execute(interaction) {
+        if (throttle()) {
+            interaction.reply({
+                content: `너무 빨리 실행하고 있어요 머리 좀 식히세요..!`,
+            });
+            return;
+        }
         const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
         // const moneyTsble = [30000, 30000, 30000, 35000, 35000, 40000, 40000, 50000];
         const min = 0;

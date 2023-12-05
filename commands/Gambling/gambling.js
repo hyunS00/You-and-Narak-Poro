@@ -2,8 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const gambling_Schema = require('../../models/gambling');
 const { EmbedBuilder } = require('@discordjs/builders');
 const { shuffle } = require('../../utils/shuffle');
-
-let timer;
+const { throttle } = require('../../utils/throttle');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,22 +16,13 @@ module.exports = {
      * @param {import("discord.js").CommandInteraction} interaction
      */
     async execute(interaction) {
-        console.log(timer);
-        // 1. timer 값이 undefined니까 if문 실행
-        if (!timer) {
-            // 2. timer 에 time함수 설정
-            timer = setTimeout(function () {
-                // 3. 설정시간에 맞춰 timer 초기화 및 함수 실행
-                timer = null;
-            }, 2000);
-        } else {
+        if (throttle()) {
             interaction.reply({
                 content: `너무 빨리 실행하고 있어요 머리 좀 식히세요..!`,
             });
             return;
         }
 
-        console.log('인터렉션', interaction);
         const bettingMoney = interaction.options.getInteger('베팅금', true);
         const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
 
@@ -98,7 +88,6 @@ module.exports = {
         });
 
         collertor.on('collect', async (interaction) => {
-            console.log('버튼 클릭', interaction);
             if (interaction.customId === `${interaction.user.id}true${date}`) {
                 buttonActionRow.components.forEach((obj) => {
                     if (obj.data.custom_id === `${interaction.user.id}true${date}`) {
@@ -162,6 +151,5 @@ module.exports = {
                 interaction.update({ embeds: [lossEmbed], components: [buttonActionRow] });
             }
         });
-        console.log(timer);
     },
 };
