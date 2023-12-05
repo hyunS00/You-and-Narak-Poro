@@ -7,10 +7,7 @@ module.exports = {
         .setName('도박잔액확인')
         .setDescription('내 잔액을 확인합니다')
         .addUserOption((option) =>
-            option
-                .setName('확인할유저')
-                .setDescription('잔액 확인할 유저를 선택합니다')
-                .setRequired(true)
+            option.setName('확인할유저').setDescription('잔액 확인할 유저를 선택합니다')
         ),
 
     /**

@@ -37,9 +37,9 @@ module.exports = {
             return;
         }
 
-        const max = 5;
+        const max = 10;
         const min = 0;
-        const randomArr = [1, 2, 1, 2, 3];
+        const randomArr = [1, 1, 1, 1, 1, 2, 2, 2, 2, 3];
         const randomIndex = Math.floor(Math.random() * (max - min) + min);
         const random = randomArr[randomIndex];
 
