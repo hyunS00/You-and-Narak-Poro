@@ -33,8 +33,12 @@ module.exports = {
         console.log(option_user);
         const Remittance_gambling_find = await gambling_Schema.findOne({
             userid: interaction.user.id,
+            guildid: interaction.guildId,
         });
-        const Deposit_gambling_find = await gambling_Schema.findOne({ userid: option_user.id });
+        const Deposit_gambling_find = await gambling_Schema.findOne({
+            userid: option_user.id,
+            guildid: interaction.guildId,
+        });
 
         if (!Deposit_gambling_find || !Remittance_gambling_find) {
             interaction.reply({ content: `유저 데이터가 존재하지 않습니다` });
@@ -48,12 +52,12 @@ module.exports = {
         }
 
         await gambling_Schema.updateMany(
-            { userid: interaction.user.id },
+            { userid: interaction.user.id, guildid: interaction.guildId },
             { money: Remittance_gambling_find.money - sendMoney }
         );
 
         await gambling_Schema.updateMany(
-            { userid: option_user.id },
+            { userid: option_user.id, guildid: interaction.guildId },
             { money: Deposit_gambling_find.money + sendMoney }
         );
 

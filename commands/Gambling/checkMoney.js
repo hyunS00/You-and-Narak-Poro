@@ -9,7 +9,6 @@ module.exports = {
         .addUserOption((option) =>
             option.setName('확인할유저').setDescription('잔액 확인할 유저를 선택합니다')
         ),
-
     /**
      *
      * @param {import("discord.js").CommandInteraction} interaction
@@ -22,7 +21,10 @@ module.exports = {
         } else {
             user = interaction.user;
         }
-        const gambling_find = await gambling_Schema.findOne({ userid: user.id });
+        const gambling_find = await gambling_Schema.findOne({
+            userid: user.id,
+            guildid: interaction.guildId,
+        });
 
         if (!gambling_find) {
             interaction.reply({ content: `데이터가 존재하지 않습니다` });

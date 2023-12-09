@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose');
 
 const schemaF = new Schema({
     userid: String,
+    guildid: String,
+    userName: String,
     money: Number,
     cooltime: Number,
 });

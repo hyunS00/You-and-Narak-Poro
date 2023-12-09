@@ -17,7 +17,10 @@ module.exports = {
             });
             return;
         }
-        const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
+        const gambling_find = await gambling_Schema.findOne({
+            userid: interaction.user.id,
+            guildid: interaction.guildId,
+        });
         // const moneyTsble = [30000, 30000, 30000, 35000, 35000, 40000, 40000, 50000];
         const min = 0;
         const max = 8;
@@ -35,10 +38,13 @@ module.exports = {
                 return;
             }
         }
-
         await gambling_Schema.updateOne(
-            { userid: interaction.user.id },
-            { money: (gambling_find?.money || 0) + money, cooltime: Date.now() },
+            { userid: interaction.user.id, guildid: interaction.guildId },
+            {
+                money: (gambling_find?.money || 0) + money,
+                cooltime: Date.now(),
+                userName: interaction.user.globalName,
+            },
             { upsert: true }
         );
 

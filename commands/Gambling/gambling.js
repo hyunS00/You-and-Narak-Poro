@@ -24,7 +24,10 @@ module.exports = {
         }
 
         const bettingMoney = interaction.options.getInteger('베팅금', true);
-        const gambling_find = await gambling_Schema.findOne({ userid: interaction.user.id });
+        const gambling_find = await gambling_Schema.findOne({
+            userid: interaction.user.id,
+            guildid: interaction.guildId,
+        });
 
         if (!gambling_find) {
             interaction.reply({ content: `데이터가 존재하지 않습니다` });
@@ -98,6 +101,7 @@ module.exports = {
                 });
                 const gambling_find = await gambling_Schema.findOne({
                     userid: interaction.user.id,
+                    guildid: interaction.guildId,
                 });
                 const winEmbed = new EmbedBuilder()
                     .setTitle('성공했어요!')
@@ -112,7 +116,7 @@ module.exports = {
                     .setColor(0x7cc9c5);
 
                 await gambling_Schema.updateMany(
-                    { userid: interaction.user.id },
+                    { userid: interaction.user.id, guildid: interaction.guildId },
                     { money: gambling_find.money + bettingMoney * random }
                 );
                 interaction.update({ embeds: [winEmbed], components: [buttonActionRow] });
@@ -132,6 +136,7 @@ module.exports = {
                 });
                 const gambling_find = await gambling_Schema.findOne({
                     userid: interaction.user.id,
+                    guildid: interaction.guildId,
                 });
                 const lossEmbed = new EmbedBuilder()
                     .setTitle('졌어요ㅜㅜ!')
@@ -145,7 +150,7 @@ module.exports = {
                     .setColor(0x7cc9c5);
 
                 await gambling_Schema.updateMany(
-                    { userid: interaction.user.id },
+                    { userid: interaction.user.id, guildid: interaction.guildId },
                     { money: gambling_find.money - bettingMoney }
                 );
                 interaction.update({ embeds: [lossEmbed], components: [buttonActionRow] });

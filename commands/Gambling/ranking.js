@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(interaction) {
         const gambling_find = await gambling_Schema
-            .find()
+            .find({ guildid: interaction.guildId })
             .sort([['money', 'descending']])
             .limit(10)
             .exec();
@@ -21,7 +21,6 @@ module.exports = {
             .setTitle(`도박 순위 💸`)
             .setColor(0x7cc9c5)
             .setThumbnail(numberOne.displayAvatarURL());
-
         for (let i = 0; i < gambling_find.length; i++) {
             const user = await interaction.client.users.fetch(gambling_find[i].userid);
             embed.addFields({
