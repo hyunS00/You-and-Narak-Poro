@@ -1,7 +1,3 @@
-const throttleTimer = {
-    timer: null,
-};
-
 module.exports = {
     timer: null,
     throttle() {

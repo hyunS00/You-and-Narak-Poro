@@ -29,6 +29,10 @@ module.exports = {
             return;
         }
         const option_user = interaction.options.getUser('송금할유저');
+        if (option_user.id === interaction.user.id) {
+            interaction.reply({ content: `버그 악용을 하려고해?! 예끼 이놈아😾` });
+            return;
+        }
         const sendMoney = interaction.options.getInteger('송금금액', true);
         console.log(option_user);
         const Remittance_gambling_find = await gambling_Schema.findOne({
