@@ -31,8 +31,8 @@ const data = new SlashCommandBuilder()
                         { name: '1티어', value: '1' },
                         { name: '2티어', value: '2' },
                         { name: '3티어', value: '3' },
-                        { name: '4티어', value: '4' },
-                        { name: '5티어', value: '5' }
+                        { name: '4티어', value: '4' }
+                        // { name: '5티어', value: '5' }
                     );
             })
     )
