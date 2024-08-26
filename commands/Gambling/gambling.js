@@ -148,7 +148,11 @@ module.exports = {
         interaction.customId === `${interaction.user.id}false4${date}`
       ) {
         buttonActionRow.components.forEach((obj) => {
-          if (obj.data.custom_id === `${interaction.user.id}true${date}`) {
+          if (obj.data.custom_id === interaction.customId) {
+            obj.setStyle(ButtonStyle.Secondary).setDisabled(true);
+          } else if (
+            obj.data.custom_id === `${interaction.user.id}true${date}`
+          ) {
             obj.setStyle(ButtonStyle.Success).setDisabled(true);
           } else {
             obj.setStyle(ButtonStyle.Danger).setDisabled(true);
